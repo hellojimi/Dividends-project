@@ -19,11 +19,6 @@ public class CompanyController {
 
     private final CompanyService companyService;
 
-    @GetMapping("/autocomplete")
-    public ResponseEntity<?> autocomplete(@RequestParam String keyword) {
-        return null;
-    }
-
     @GetMapping
     public ResponseEntity<?> searchCompany(final Pageable pageable) {
         Page<CompanyEntity> companies = companyService.getAllCompany(pageable);
@@ -38,8 +33,15 @@ public class CompanyController {
         }
 
         Company company = companyService.save(ticker);
+        companyService.addAutocompleteKeyword(company.getName());
 
         return ResponseEntity.ok(company);
+    }
+
+    @GetMapping("/autocomplete")
+    public ResponseEntity<?> autocomplete(@RequestParam String keyword) {
+        List<String> autocomplete = companyService.autocomplete(keyword);
+        return ResponseEntity.ok(autocomplete);
     }
 
     @DeleteMapping

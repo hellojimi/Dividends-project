@@ -1,7 +1,9 @@
 package zerobase.dividends.service;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.collections4.Trie;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import zerobase.dividends.model.Company;
@@ -20,6 +22,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CompanyService {
 
+    private final Trie trie;
     private final Scrapper yahooFinanceScrapper;
 
     private final CompanyRepository companyRepository;
@@ -54,5 +57,20 @@ public class CompanyService {
         dividendRepository.saveAll(dividendEntities);
 
         return company;
+    }
+
+    public void addAutocompleteKeyword(String keyword) {
+        trie.put(keyword, null);
+    }
+
+    public List<String> autocomplete(String keyword) {
+        return (List<String>) trie.prefixMap(keyword).keySet()
+                .stream()
+                .limit(10)
+                .collect(Collectors.toList());
+    }
+
+    public void deleteAutocompleteKeyword(String keyword) {
+        trie.remove(keyword);
     }
 }
