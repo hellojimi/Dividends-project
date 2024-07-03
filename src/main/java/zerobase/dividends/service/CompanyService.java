@@ -1,6 +1,8 @@
 package zerobase.dividends.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import zerobase.dividends.model.Company;
 import zerobase.dividends.model.ScrapedResult;
@@ -31,6 +33,10 @@ public class CompanyService {
         }
 
         return storeCompanyAndDividend(ticker);
+    }
+
+    public Page<CompanyEntity> getAllCompany(Pageable pageable) {
+        return companyRepository.findAll(pageable);
     }
 
     @Transactional
