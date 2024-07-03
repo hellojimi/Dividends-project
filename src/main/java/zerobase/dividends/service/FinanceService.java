@@ -26,7 +26,6 @@ public class FinanceService {
 
         List<DividendEntity> dividendEntities = dividendRepository.findAllByCompanyId(company.getId());
 
-
         return new ScrapedResult(
                 Company.builder()
                         .ticker(company.getTicker())

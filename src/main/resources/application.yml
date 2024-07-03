@@ -23,3 +23,7 @@ spring:
       use-new-id-generator-mappings: false
     defer-datasource-initialization: true
     show-sql: true
+
+scheduler:
+  scrap:
+    yahoo: "0 0 0 * * *"

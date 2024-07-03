@@ -3,7 +3,6 @@ package zerobase.dividends.service;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.Trie;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import zerobase.dividends.model.Company;
@@ -12,7 +11,7 @@ import zerobase.dividends.persist.CompanyRepository;
 import zerobase.dividends.persist.DividendRepository;
 import zerobase.dividends.persist.entity.CompanyEntity;
 import zerobase.dividends.persist.entity.DividendEntity;
-import zerobase.dividends.scraper.Scrapper;
+import zerobase.dividends.scraper.Scraper;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -23,7 +22,7 @@ import java.util.stream.Collectors;
 public class CompanyService {
 
     private final Trie trie;
-    private final Scrapper yahooFinanceScrapper;
+    private final Scraper yahooFinanceScrapper;
 
     private final CompanyRepository companyRepository;
     private final DividendRepository dividendRepository;

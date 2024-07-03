@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 @Component
-public class YahooFinanceScraper implements Scrapper {
+public class YahooFinanceScraper implements Scraper {
 
     private static final String STATISTICS_URL = "https://finance.yahoo.com/quote/%s/history/?frequency=1mo&period1=%d&period2=%d";
     private static final String SUMMARY_URL = "https://finance.yahoo.com/quote/%s/";
