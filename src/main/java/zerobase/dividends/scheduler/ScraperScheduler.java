@@ -2,10 +2,13 @@ package zerobase.dividends.scheduler;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import zerobase.dividends.model.Company;
 import zerobase.dividends.model.ScrapedResult;
+import zerobase.dividends.model.constants.CacheKey;
 import zerobase.dividends.persist.CompanyRepository;
 import zerobase.dividends.persist.DividendRepository;
 import zerobase.dividends.persist.entity.CompanyEntity;
@@ -17,12 +20,14 @@ import java.util.List;
 @Slf4j
 @Component
 @RequiredArgsConstructor
+@EnableCaching
 public class ScraperScheduler {
 
     private final CompanyRepository companyRepository;
     private final DividendRepository dividendRepository;
     private final Scraper yahooFinanceScraper;
 
+    @CacheEvict(value = CacheKey.KEY_FINANCE, allEntries = true)
     @Scheduled(cron = "${scheduler.scrap.yahoo}")
     public void yahooFinanceScheduling() {
         log.info("scraping scheduler is started");

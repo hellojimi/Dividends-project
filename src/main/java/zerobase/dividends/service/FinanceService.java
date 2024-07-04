@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import zerobase.dividends.model.Company;
 import zerobase.dividends.model.Dividend;
 import zerobase.dividends.model.ScrapedResult;
+import zerobase.dividends.model.constants.CacheKey;
 import zerobase.dividends.persist.CompanyRepository;
 import zerobase.dividends.persist.DividendRepository;
 import zerobase.dividends.persist.entity.CompanyEntity;
@@ -23,7 +24,7 @@ public class FinanceService {
     private final CompanyRepository companyRepository;
     private final DividendRepository dividendRepository;
 
-    @Cacheable(key = "#companyName", value = "finance")
+    @Cacheable(key = "#companyName", value = CacheKey.KEY_FINANCE)
     public ScrapedResult getDividendByCompanyName(String companyName) {
         log.info("search company -> " + companyName);
 
