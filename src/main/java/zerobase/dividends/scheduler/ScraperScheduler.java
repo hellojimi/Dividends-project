@@ -30,11 +30,11 @@ public class ScraperScheduler {
     @CacheEvict(value = CacheKey.KEY_FINANCE, allEntries = true)
     @Scheduled(cron = "${scheduler.scrap.yahoo}")
     public void yahooFinanceScheduling() {
-        log.info("scraping scheduler is started");
-
         List<CompanyEntity> companies = companyRepository.findAll();
 
         for (CompanyEntity company : companies) {
+            log.info("scraping scheduler is started -> " + company.getName());
+
             ScrapedResult scrapedResult = yahooFinanceScraper.scrap(
                     new Company(company.getTicker(), company.getName())
             );
@@ -45,6 +45,7 @@ public class ScraperScheduler {
                         boolean exists = dividendRepository.existsByCompanyIdAndDate(e.getCompanyId(), e.getDate());
                         if (!exists) {
                             dividendRepository.save(e);
+                            log.info("insert new dividend -> " + e.toString());
                         }
                     });
 
