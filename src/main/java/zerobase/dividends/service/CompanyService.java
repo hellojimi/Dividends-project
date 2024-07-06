@@ -5,6 +5,8 @@ import org.apache.commons.collections4.Trie;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import zerobase.dividends.exception.impl.AlreadyExistCompanyException;
+import zerobase.dividends.exception.impl.NoCompanyException;
 import zerobase.dividends.model.Company;
 import zerobase.dividends.model.ScrapedResult;
 import zerobase.dividends.persist.CompanyRepository;
@@ -31,7 +33,7 @@ public class CompanyService {
     public Company save(String ticker) {
         boolean exist = companyRepository.existsByTicker(ticker);
         if (exist) {
-            throw new RuntimeException("already exist ticker -> " + ticker);
+            throw new AlreadyExistCompanyException();
         }
 
         return storeCompanyAndDividend(ticker);
@@ -75,7 +77,7 @@ public class CompanyService {
 
     public String deleteCompany(String ticker) {
         CompanyEntity company = companyRepository.findByTicker(ticker)
-                .orElseThrow(() -> new RuntimeException("존재하지 않는 회사명입니다."));
+                .orElseThrow(NoCompanyException::new);
 
         dividendRepository.deleteAllByCompanyId(company.getId());
         companyRepository.delete(company);
